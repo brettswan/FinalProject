@@ -1,6 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {PhotoServiceService} from './photo-service.service';
 import {Http} from '@angular/http';
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-root',
@@ -13,12 +14,24 @@ export class AppComponent {
   show = false;
   @ViewChild('input') _FileInput;
 
-  constructor(private PhotoService: PhotoServiceService)  {
+  url = this.sanitizer.bypassSecurityTrustResourceUrl('http://localhost:3000/img/');
+
+  Images: string[] = ['http://localhost:3000/img/c7b05183750897365f31887842a2d547',
+    'http://localhost:3000/img/db4773e96527041cd4785ddaac572d24',
+    'http://localhost:3000/img/fa7e37aaefc97a52b93666c8361b9d3c',
+    'http://localhost:3000/img/df9497a8e1c53b4de950d53ef4f607f'
+  ];
+
+  constructor(private PhotoService: PhotoServiceService, private sanitizer: DomSanitizer)  {
   }
 
   add() {
     this.show = true;
 
+  }
+
+  getSource(image: string)  {
+    return this.url + image;
   }
 
   upload()  {
